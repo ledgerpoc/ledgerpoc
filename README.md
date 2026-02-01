@@ -118,6 +118,7 @@ with the PoC:
 ---
 
 ## Project Structure (high level)
+```text
 ├── app/
 │ ├── accounts
 │ └── transactions
@@ -130,10 +131,11 @@ with the PoC:
 │ └── http/ # HTTP test files (REST Client style)
 ├── package.json
 └── README.md
-
+```
 ---
 
 ## Service Actions (LedgerService)
+```text
 LedgerService
 │
 ├─ loadBalances(company, file)
@@ -147,6 +149,7 @@ LedgerService
   ├─ updates Accounts balances
   ├─ creates Transactions records
   ├─ sets status = SUCCESS or REJECTED
+```
 
 ## Testing Solution
 Testing is done using the SAP CAP development runtime and the built-in HTTP
