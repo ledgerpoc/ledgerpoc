@@ -23,7 +23,7 @@
         "[development]": {
           "kind": "sqlite",
           "credentials": {
-            "url": ":memory:"
+            "url": "./db/ledgerpoc.sqlite"
           }
         }
       }

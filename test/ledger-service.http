@@ -13,10 +13,6 @@ GET {{baseUrl}}/LedgerService/$metadata
 
 
 ### ------------------------------------------------------------------------
-# Get all Transactions
-GET {{baseUrl}}/LedgerService/Transactions
-
-### ------------------------------------------------------------------------
 # Load Balances for ALPHA
 # Below CSV data is sent as Base64 code to file
 #1111234522226789,5000.00,AUD
