@@ -1,0 +1,123 @@
+# In the following requests the variable baseUrl is used.
+# Its value is set here.
+@baseUrl = http://localhost:4004
+
+### ------------------------------------------------------------------------
+# Get Service Document
+GET {{baseUrl}}/LedgerService
+
+
+### ------------------------------------------------------------------------
+# Get Service Metadata Document
+GET {{baseUrl}}/LedgerService/$metadata
+
+
+### ------------------------------------------------------------------------
+# Get all Transactions
+GET {{baseUrl}}/LedgerService/Transactions
+
+### ------------------------------------------------------------------------
+# Load Balances for ALPHA
+# Below CSV data is sent as Base64 code to file
+#1111234522226789,5000.00,AUD
+#1111234522221234,10000.00,AUD
+#2222123433331212,550.00,AUD
+#1212343433335665,1200.00,AUD
+#3212343433335755,50000.00,AUD
+POST http://localhost:4004/LedgerService/loadBalances
+Content-Type: application/json
+
+{
+    "company": "ALPHA",
+    "file": "MTExMTIzNDUyMjIyNjc4OSw1MDAwLjAwLEFVRAoxMTExMjM0NTIyMjIxMjM0LDEwMDAwLjAwLEFVRAoyMjIyMTIzNDMzMzMxMjEyLDU1MC4wMCxBVUQKMTIxMjM0MzQzMzMzNTY2NSwxMjAwLjAwLEFVRAozMjEyMzQzNDMzMzM1NzU1LDUwMDAwLjAwLEFVRA=="
+}
+
+### ------------------------------------------------------------------------
+# Get all Accounts
+# Verify the Load
+GET {{baseUrl}}/LedgerService/Accounts
+
+### ------------------------------------------------------------------------
+# Load Balances for ALPHA
+# No Company Passed, must result in error
+# Below CSV data is sent as Base64 code to file
+#1111234522226789,5000.00,AUD
+#1111234522221234,10000.00,AUD
+
+POST http://localhost:4004/LedgerService/loadBalances
+Content-Type: application/json
+
+{
+    "company": "",
+    "file": "MTExMTIzNDUyMjIyNjc4OSw1MDAwLjAwLEFVRAoxMTExMjM0NTIyMjIxMjM0LDEwMDAwLjAwLEFVRA=="
+}
+
+### ------------------------------------------------------------------------
+# Load Balances for ALPHA
+# No Account Number Passed, must result in error
+# Below CSV data is sent as Base64 code to file
+#,5000.00,AUD
+#1111234522221234,10000.00,AUD
+
+POST http://localhost:4004/LedgerService/loadBalances
+Content-Type: application/json
+
+{
+    "company": "ALPHA",
+    "file": "LDUwMDAuMDAsQVVECjExMTEyMzQ1MjIyMjEyMzQsMTAwMDAuMDAsQVVE"
+}
+
+### ------------------------------------------------------------------------
+# Process Transfer for ALPHA
+# If ALPHA balance is not loaded then please load before performing this test
+# Below CSV data is sent as Base64 code to file
+#1111234522226789,1212343433335665,500.00,AUD
+#3212343433335755,2222123433331212,1000.00,AUD
+#3212343433335755,1111234522226789,320.50,AUD
+#1111234522221234,1212343433335665,25.60,AUD
+POST http://localhost:4004/LedgerService/processTransactions
+Content-Type: application/json
+
+{
+    "file": "MTExMTIzNDUyMjIyNjc4OSwxMjEyMzQzNDMzMzM1NjY1LDUwMC4wMCxBVUQKMzIxMjM0MzQzMzMzNTc1NSwyMjIyMTIzNDMzMzMxMjEyLDEwMDAuMDAsQVVECjMyMTIzNDM0MzMzMzU3NTUsMTExMTIzNDUyMjIyNjc4OSwzMjAuNTAsQVVECjExMTEyMzQ1MjIyMjEyMzQsMTIxMjM0MzQzMzMzNTY2NSwyNS42MCxBVUQ="
+}
+
+### ------------------------------------------------------------------------
+# Get all Transactions
+GET {{baseUrl}}/LedgerService/Transactions
+
+### ------------------------------------------------------------------------
+# Get all Accounts
+# Verify the Updated Balance
+GET {{baseUrl}}/LedgerService/Accounts
+
+### ------------------------------------------------------------------------
+# Invalid Account Transfer Test, should result in error
+# If ALPHA balance is not loaded then please load before performing this test
+# Below CSV data is sent as Base64 code to file
+#1111234522226789,1212343433335667,500.00,AUD
+POST http://localhost:4004/LedgerService/processTransactions
+Content-Type: application/json
+
+{
+    "file": "MTExMTIzNDUyMjIyNjc4OSwxMjEyMzQzNDMzMzM1NjY3LDUwMC4wMCxBVUQ="
+}
+
+### ------------------------------------------------------------------------
+# Validate if account balance will be less tha 0 then Transfer is Rejected
+# If ALPHA balance is not loaded then please load before performing this test
+# Below CSV data is sent as Base64 code to file
+#1111234522226789,1212343433335665,6000.00,AUD (Will result in Balance below 0 for Source)
+#3212343433335755,2222123433331212,1000.00,AUD
+#3212343433335755,1111234522226789,320.50,AUD
+#1111234522221234,1212343433335665,25.60,AUD
+POST http://localhost:4004/LedgerService/processTransactions
+Content-Type: application/json
+
+{
+    "file": "MTExMTIzNDUyMjIyNjc4OSwxMjEyMzQzNDMzMzM1NjY1LDYwMDAuMDAsQVVECjMyMTIzNDM0MzMzMzU3NTUsMjIyMjEyMzQzMzMzMTIxMiwxMDAwLjAwLEFVRAozMjEyMzQzNDMzMzM1NzU1LDExMTEyMzQ1MjIyMjY3ODksMzIwLjUwLEFVRAoxMTExMjM0NTIyMjIxMjM0LDEyMTIzNDM0MzMzMzU2NjUsMjUuNjAsQVVE"
+}
+
+### ------------------------------------------------------------------------
+# Get all Rejected Transactions
+GET {{baseUrl}}/LedgerService/Transactions?$filter=status eq 'R'
