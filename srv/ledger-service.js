@@ -3,7 +3,7 @@
     const {
         Readable
     } = require('stream');
-
+    const { messages } = cds.i18n;
     class LedgerService extends cds.ApplicationService{
         init(){
             // Load Balance
@@ -57,14 +57,14 @@
             //console.log(TransType);
             // Validate Company is supplied
             if (!company || company.trim() === "") {
-                return req.error(400, `Validation Error: Company cannot be blank`);
+                return req.error(400, 'COMPANY_REQUIRED');
             }
 
             for (const row of rows) {
                 //console.log("row",row);
                 // Validate Account NUmber is not blank
                 if (!row.Account || row.Account.trim() === "") {
-                    return req.error(400, `Validation Error: Account Number cannot be blank at row ${rows.indexOf(row) + 1}`);
+                    return req.error(400,'ACCOUNT_REQUIRED', [rows.indexOf(row) + 1]);
                 }
 
 
@@ -104,9 +104,9 @@
                     });
                 }
             }
-
+            req.notify('BALANCE_LOADED',[rows.length]);
             return {
-                StatusMessage: `Loaded balance successfully for ${rows.length} records`
+                StatusMessage: messages.at('BALANCE_LOADED',[rows.length])
             }
         }
 
@@ -198,12 +198,13 @@
                     status: TransStatus.SUCCESS.val
                 });
             }
-            let messages = [];
-            if(successRecords > 0){ messages.push(`${ successRecords} processed successfully`)}
-            if(errorRecords > 0){ messages.push(`${errorRecords} rejected`);}
-            let returnMessage = `Out of ${rows.length} records ${messages.join(' and ')}`;
+            
+            let transferMessages = [];
+            if(successRecords > 0){ transferMessages.push(messages.at('RECORD_SUCCESS',[successRecords]))}
+            if(errorRecords > 0){ transferMessages.push(messages.at('RECORD_REJECTED',[errorRecords]));}
+            req.notify('TRANSFER_EXECUTED',[rows.length,transferMessages.join(' and ')])
             return {
-                StatusMessage: returnMessage
+                StatusMessage: messages.at('TRANSFER_EXECUTED',[rows.length,transferMessages.join(' and ')])
             };
         }
 
