@@ -5,27 +5,27 @@ annotate service.Transactions with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'sourceAccount',
+                Label : '{i18n>FromAccount}',
                 Value : sourceAccount,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'targetAccount',
+                Label : '{i18n>ToAccount}',
                 Value : targetAccount,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'amount',
+                Label : '{i18n>Amount}',
                 Value : amount,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'currency_code',
+                Label : '{i18n>Currency}',
                 Value : currency_code,
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'status',
+                Label : '{i18n>Status}',
                 Value : status,
             },
         ],
@@ -41,27 +41,27 @@ annotate service.Transactions with @(
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'From Account',
+            Label : '{i18n>FromAccount}',
             Value : sourceAccount,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'To Account',
+            Label : '{i18n>ToAccount}',
             Value : targetAccount,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'Amount',
+            Label : '{i18n>Amount}',
             Value : amount,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'Currency',
+            Label : '{i18n>Currency}',
             Value : currency_code,
         },
         {
             $Type : 'UI.DataField',
-            Label : 'Status',
+            Label : '{i18n>Status}',
             Value : status,
         },
     ],

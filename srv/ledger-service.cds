@@ -11,7 +11,7 @@ service LedgerService @(path: '/LedgerService'){
     // We need company as input for tagging of account to given company
     // It is assumed that Load meeans Overwrite and it is not Delta Load
     action loadBalances(
-        //@Core.MediaType: 'text/csv' 
+        @Core.MediaType: 'text/csv' 
         file: LargeBinary, 
         company: String
     )returns {
@@ -22,7 +22,7 @@ service LedgerService @(path: '/LedgerService'){
         validation can happen internally that 
         account belongs to different companies*/
     action processTransactions(
-        //@Core.MediaType: 'text/csv' 
+        @Core.MediaType: 'text/csv' 
         file: LargeBinary
     ) returns {
         StatusMessage : String;
