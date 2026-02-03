@@ -1,4 +1,5 @@
     const cds = require('@sap/cds');
+const { resolveObjectURL } = require('buffer');
     const csv = require('csv-parser');
     const {
         Readable
@@ -126,6 +127,7 @@
             //console.log("Rows:", rows);
             let successRecords = 0;
             let errorRecords = 0;
+            let errorSourceAccount = [];
             for (const row of rows) {
                 const amount = Number(row.Amount);
 
@@ -151,6 +153,7 @@
                 
                 if (from.balance - amount < 0) {
                     errorRecords += 1;
+                    errorSourceAccount.push(row.From);
                     await txn.create(Transactions, {
                         sourceAccount: row.From,
                         targetAccount: row.To,
@@ -201,8 +204,13 @@
             
             let transferMessages = [];
             if(successRecords > 0){ transferMessages.push(messages.at('RECORD_SUCCESS',[successRecords]))}
-            if(errorRecords > 0){ transferMessages.push(messages.at('RECORD_REJECTED',[errorRecords]));}
-            req.notify('TRANSFER_EXECUTED',[rows.length,transferMessages.join(' and ')])
+            if(errorRecords > 0){ 
+                transferMessages.push(messages.at('RECORD_REJECTED',[errorRecords,errorSourceAccount.join(", ")]));
+                req.info('TRANSFER_EXECUTED',[rows.length,transferMessages.join(' and ')])
+            }else{
+                req.notify('TRANSFER_EXECUTED',[rows.length,transferMessages.join(' and ')])
+            }
+            
             return {
                 StatusMessage: messages.at('TRANSFER_EXECUTED',[rows.length,transferMessages.join(' and ')])
             };

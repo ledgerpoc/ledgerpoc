@@ -152,13 +152,23 @@ LedgerService
 ```
 
 ## Testing Solution
-Testing is done using the SAP CAP development runtime and the built-in HTTP
-client in SAP Business Application Studio.
+### Testing using the SAP CAP development runtime and the built-in HTTP client in SAP Business Application Studio.
 
-- Open a new terminal and run `cds deploy`
+- Open a new terminal and run `cds deploy` (For first time only)
   - Create a database file with the specified name in the root folder of your project.
   - Create the tables and views according to your CDS model in the database.
 - Open a new terminal and run `cds watch`
 - (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
 - Open the provided _*./test/ledger-service.http*_ file in the project.
 - Execute the test requests directly from the editor
+
+### Testing using the UI Apps (Fiori Elements).
+- Open a new terminal and run `cds deploy` (For first time only)
+  - Create a database file with the specified name in the root folder of your project.
+  - Create the tables and views according to your CDS model in the database.
+- Open a new terminal and run `cds watch`
+- Click on Open in New Tab prompt (appears after app is started) or click on url in the terminal **[cds] [INFO] server listening on { url: 'http://localhost:4004' }**
+- From local host page you can click on
+  - /com.mbec.ledgerpoc.accounts/index.html to launch Accounts App
+  - /com.mbec.ledgerpoc.transactions/index.html to launch Transactions App
+- You can Load Balances & Transactions using Accounts app

@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+    <Dialog id="loadBalanceDialog" 
+            title="{i18n>loadBalances}" 
+            class="sapUiContentPadding sapUiSmallMarginBeginEnd" 
+            contentWidth="250px" 
+            contentHeight="150px">
+        <content>
+            <u:FileUploader 
+                id="loadBalanceFileUploader" 
+                width="100%" 
+                tooltip="Select file to Load Balances"
+                fileType="csv"
+                typeMissmatch="handleBalancesTypeMissmatch"
+                change="handleBalancesValueChange"
+			    uploadComplete="handleBalancesUploadComplete" 
+                required="true"/>
+            <Label id="loadBalanceCompanyLabel" labelFor="loadBalanceCompanyInput" text="Company" required="true"/>
+            <Input id="loadBalanceCompanyInput" liveChange="onCompanyInputChange" />
+        </content>
+        <beginButton>
+            <Button id="loadBalanceUploadButton" text="Upload" press="onBalancesUpload" />
+        </beginButton>
+        <endButton>
+            <Button id="loadBalanceCloseButton" text="Close" press="onBalancesCloseDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

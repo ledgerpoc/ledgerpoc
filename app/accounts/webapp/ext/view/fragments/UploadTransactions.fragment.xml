@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+    <Dialog id="uploadTransactionDialog" 
+            title="{i18n>uploadTransactions}" 
+            class="sapUiContentPadding sapUiSmallMarginBeginEnd" 
+            contentWidth="250px" 
+            contentHeight="150px">
+        <content>
+            <u:FileUploader 
+                id="uploadTransactionFileUploader" 
+                width="100%" 
+                tooltip="Select file to Upload Transactions"
+                fileType="csv"
+                typeMissmatch="handleTransactionsTypeMissmatch"
+                change="handleTransactionsValueChange"
+			    uploadComplete="handleTransactionsUploadComplete" 
+                required="true"/>
+        </content>
+        <beginButton>
+            <Button id="uploadTransactionUploadButton" text="Upload" press="onTransactionsUpload" />
+        </beginButton>
+        <endButton>
+            <Button id="uploadTransactionCloseButton" text="Close" press="onTransactionsCloseDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>
